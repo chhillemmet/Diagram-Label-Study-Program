@@ -61,6 +61,7 @@ const FEEDBACK_COLORS = { correct: [92, 157, 100], wrong: [196, 76, 61] };
 const homeScreen = document.querySelector('#home-screen');
 const quizScreen = document.querySelector('#quiz-screen');
 const resultsScreen = document.querySelector('#results-screen');
+const appShell = document.querySelector('.app-shell');
 const startButton = document.querySelector('#start-button');
 const playAgainButton = document.querySelector('#play-again-button');
 const startNote = document.querySelector('#setup-note');
@@ -147,6 +148,7 @@ function randomize(items) {
 }
 
 function setScreen(screen) {
+  appShell.classList.toggle('is-playing', screen === quizScreen);
   for (const panel of [homeScreen, quizScreen, resultsScreen]) panel.hidden = panel !== screen;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -179,8 +181,16 @@ function showTarget() {
 function regionAtClick(event) {
   const canvas = event.currentTarget;
   const bounds = canvas.getBoundingClientRect();
-  const x = Math.floor((event.clientX - bounds.left) * canvas.width / bounds.width);
-  const y = Math.floor((event.clientY - bounds.top) * canvas.height / bounds.height);
+  const imageAspect = canvas.width / canvas.height;
+  let imageWidth = bounds.width;
+  let imageHeight = bounds.height;
+  if (imageWidth / imageHeight > imageAspect) imageWidth = imageHeight * imageAspect;
+  else imageHeight = imageWidth / imageAspect;
+  const imageLeft = bounds.left + (bounds.width - imageWidth) / 2;
+  const imageTop = bounds.top + (bounds.height - imageHeight) / 2;
+  if (event.clientX < imageLeft || event.clientY < imageTop || event.clientX >= imageLeft + imageWidth || event.clientY >= imageTop + imageHeight) return 0;
+  const x = Math.floor((event.clientX - imageLeft) * canvas.width / imageWidth);
+  const y = Math.floor((event.clientY - imageTop) * canvas.height / imageHeight);
   if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return 0;
   return regionLabels[(y * canvas.width + x) * 4];
 }
