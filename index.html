@@ -6,34 +6,34 @@
     <meta name="theme-color" content="#f5f3ed">
     <meta name="description" content="A quick, interactive map quiz for studying the countries of Africa.">
     <title>Africa Map Practice</title>
-    <link rel="stylesheet" href="styles.css?v=3">
-    <script src="app.js?v=3" defer></script>
+    <link rel="stylesheet" href="styles.css?v=4">
+    <script src="app.js?v=4" defer></script>
   </head>
   <body>
     <main class="app-shell">
       <header class="site-header">
         <a class="wordmark" href="#home" aria-label="Africa Map Practice home">
           <span class="wordmark-icon" aria-hidden="true">◎</span>
-          <span>FIELD NOTES <span class="wordmark-divider">/</span> GEOGRAPHY</span>
+          <span>Africa Map Practice</span>
         </a>
         <span class="course-tag">ACS 11 · NOVA SCOTIA</span>
       </header>
 
       <section id="home-screen" class="screen home-screen" aria-labelledby="home-title">
         <div class="home-copy">
-          <p class="eyebrow">MAP STUDY · 01</p>
-          <h1 id="home-title">Africa,<br><span>by heart.</span></h1>
-          <p class="intro">A focused map drill for your ACS 11 test. Find each country on the map and see how you do.</p>
+          <p class="eyebrow">ACS 11 GEOGRAPHY</p>
+          <h1 id="home-title">Practice the<br><span>Africa map</span></h1>
+          <p class="intro">Practice finding the 25 countries on your study list. Click Start when you’re ready.</p>
           <div class="home-actions">
-            <button id="start-button" class="button button-primary" type="button">Start practice <span aria-hidden="true">↗</span></button>
+            <button id="start-button" class="button button-primary" type="button">Start practice</button>
             <span id="setup-note" class="setup-note"></span>
           </div>
-          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">25 COUNTRIES · ONE ROUND</span></div>
+          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">25 countries · one round</span></div>
         </div>
         <div class="home-art" aria-hidden="true">
-          <div class="art-topline"><span>AFRICA</span><span>01 / 25</span></div>
+          <div class="art-topline"><span>Africa map</span><span>Study sheet</span></div>
           <canvas id="home-map" class="home-map" width="1011" height="1082" aria-hidden="true"></canvas>
-          <div class="art-bottomline"><span>CONTINENTAL STUDY SERIES</span><span>ACS 11</span></div>
+          <div class="art-bottomline"><span>ACS 11</span><span>Country practice</span></div>
         </div>
       </section>
 
@@ -61,7 +61,7 @@
       <section id="results-screen" class="screen results-screen" aria-labelledby="results-title" hidden>
         <div class="results-heading">
           <p class="eyebrow">ROUND COMPLETE · ACS 11</p>
-          <h1 id="results-title">Your field report.</h1>
+          <h1 id="results-title">Round results</h1>
           <p id="results-lede" class="intro"></p>
         </div>
         <div class="results-layout">
@@ -86,7 +86,7 @@
         </div>
       </section>
 
-    <footer class="site-footer"><span>FIELD NOTES <span class="wordmark-divider">/</span> GEOGRAPHY</span><span class="signature">MADE WITH CARE BY EMMET BURNIE <span class="wordmark-divider">·</span> © 2026</span></footer>
+    <footer class="site-footer"><span>AFRICA MAP PRACTICE</span><span class="signature">Made by Emmet Burnie · © 2026</span></footer>
     </main>
     <img id="source-map" src="africa-map.png" alt="" hidden>
     <img id="region-index" src="map-region-index.png" alt="" hidden>

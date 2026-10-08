@@ -59,3 +59,20 @@ button{font:inherit}
   .answer-lists{grid-template-columns:1fr 1fr;align-self:auto}
   .results-actions .button{flex:1 1 140px}
 }
+
+/* Keep the study tool friendly and straightforward. */
+:root{--paper:#f8f8f5;--ink:#26302b;--muted:#626b63;--line:#d9ded7;--green:#3f7650;--yellow:#d2ae5c;--serif:Arial,Helvetica,sans-serif;--mono:Arial,Helvetica,sans-serif}
+.site-header{font:600 14px var(--sans);letter-spacing:0}
+.wordmark{gap:8px}.wordmark-icon{font:20px var(--sans)}.course-tag{font-size:12px;letter-spacing:0}
+.eyebrow{font:600 12px var(--sans);letter-spacing:.04em}
+.home-copy h1,.results-heading h1{font-weight:700;letter-spacing:-.035em;line-height:1.02}
+.home-copy h1 span{font-style:normal}
+.home-art,.map-frame,.result-map-frame{background:#eeefe9}
+.art-topline,.art-bottomline,.map-note,.map-footer{font:11px var(--sans);letter-spacing:.02em;color:#69736a}
+.home-meta{font:12px var(--sans);letter-spacing:0}
+.button{border-radius:4px;font-size:14px}.button:hover{transform:none}
+.site-footer{font:12px var(--sans);letter-spacing:0}
+.site-footer .signature{font-weight:600;color:#4f6654}
+.progress-label,.score-label,.grade-block span:last-child{font:12px var(--sans);letter-spacing:0}
+.map-footer{border-color:#d5d9d1}
+@media(max-width:560px){.site-header{font-size:12px}.course-tag{font-size:10px}.site-footer{height:auto;min-height:48px;gap:10px;font-size:10px}.site-footer .signature{text-align:right}}
