@@ -61,8 +61,11 @@
       .wordmark { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; font: 800 14px/1 "Courier New", monospace; letter-spacing: .12em; }
       .mark-icon { display: grid; width: 30px; height: 30px; place-items: center; color: #130925; background: var(--cyan); box-shadow: 4px 4px 0 var(--hot); font-size: 17px; }
       .wordmark span:last-child { color: var(--pink); }
+      .top-actions { display: flex; align-items: center; gap: 18px; }
       .server-status { color: var(--muted); font: 700 11px/1.3 "Courier New", monospace; letter-spacing: .1em; }
       .server-status b { color: #7dff9e; }
+      .nav-tool { padding: 10px 12px; border: 1px solid rgba(67, 231, 255, .66); color: var(--cyan); background: rgba(67, 231, 255, .07); font: 700 10px/1 "Courier New", monospace; letter-spacing: .07em; text-decoration: none; text-transform: uppercase; }
+      .nav-tool:hover, .nav-tool:focus-visible { color: #110b2b; background: var(--cyan); outline: 2px solid var(--cyan); outline-offset: 3px; }
 
       .hero-wrap { position: relative; display: grid; min-height: 670px; place-items: center; padding: 76px 0 68px; }
       .hero-card {
@@ -122,7 +125,9 @@
         .site-shell { width: min(100% - 28px, 480px); }
         .topbar { min-height: 64px; }
         .wordmark { font-size: 11px; }
-        .server-status { max-width: 130px; font-size: 9px; text-align: right; }
+        .top-actions { gap: 9px; }
+        .server-status { max-width: 92px; font-size: 8px; text-align: right; }
+        .nav-tool { padding: 9px 7px; font-size: 8px; }
         .hero-wrap { padding: 104px 0 30px; }
         .hero-card { padding: 36px 20px 24px; }
         h1 { font-size: clamp(38px, 11vw, 56px); }
@@ -147,7 +152,10 @@
     <div class="site-shell">
       <header class="topbar">
         <a class="wordmark" href="./" aria-label="Cyber Study Club home"><span class="mark-icon" aria-hidden="true">✦</span><span>CYBER<span>STUDY</span> CLUB</span></a>
-        <div class="server-status"><b>●</b> STUDY SERVER ONLINE</div>
+        <div class="top-actions">
+          <div class="server-status"><b>●</b> STUDY SERVER ONLINE</div>
+          <a class="nav-tool" href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Map Study ↗</a>
+        </div>
       </header>
 
       <main>
