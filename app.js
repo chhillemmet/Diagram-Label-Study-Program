@@ -89,7 +89,7 @@ function syncSetup() {
   const issue = setupIssue();
   startButton.disabled = Boolean(issue);
   startNote.textContent = issue;
-  document.querySelector('#country-count').textContent = '25 COUNTRIES · ONE ROUND';
+  document.querySelector('#country-count').textContent = '25 countries · one round';
 }
 
 function loadMapData() {
