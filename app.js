@@ -36,7 +36,7 @@ const COUNTRY_REGION_IDS = {
   Egypt: 6,
   Ethiopia: 16,
   Kenya: 34,
-  Lesotho: 55,
+  Lesotho: 57,
   Liberia: 31,
   Libya: 5,
   Madagascar: 48,
