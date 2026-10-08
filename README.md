@@ -1,6 +1,6 @@
 # Africa Map Practice
 
-A small, static map quiz for ACS 11 study. The learner identifies 25 countries in a shuffled round, gets visual and sound feedback, and sees a score summary at the end.
+A small, static map quiz for studying Africa. The learner identifies 25 countries in a shuffled round, gets visual and sound feedback, and sees a score summary at the end.
 
 The practice list follows the names supplied for this study round. The misspelling “Zimbabwae” is displayed with the standard spelling “Zimbabwe.”
 
