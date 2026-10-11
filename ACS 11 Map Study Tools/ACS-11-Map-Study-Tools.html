@@ -4,22 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f3ed">
-    <meta name="description" content="A quick, interactive map quiz for studying the countries of Africa.">
+    <meta name="description" content="A quick, interactive map quiz for studying African countries and geographic features.">
     <title>Africa Map Practice</title>
-    <link rel="stylesheet" href="styles.css?v=8">
-    <script src="app.js?v=8" defer></script>
+    <link rel="stylesheet" href="styles.css?v=9">
+    <script src="app.js?v=9" defer></script>
   </head>
   <body>
     <main class="app-shell">
       <section id="home-screen" class="screen home-screen" aria-labelledby="home-title">
         <div class="home-copy">
           <h1 id="home-title">Practice the<br><span>Africa map</span></h1>
-          <p class="intro">Practice finding the 25 countries on your study list. Click Start when you’re ready.</p>
+          <p class="intro">Practice finding the countries and geographic features on your study list. The quiz switches maps as you go.</p>
           <div class="home-actions">
             <button id="start-button" class="button button-primary" type="button">Start practice</button>
             <span id="setup-note" class="setup-note"></span>
           </div>
-          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">25 countries · one round</span></div>
+          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">34 places · one round</span></div>
         </div>
         <div class="home-art" aria-hidden="true">
           <canvas id="home-map" class="home-map" width="1011" height="1082" aria-hidden="true"></canvas>
@@ -29,17 +29,18 @@
       <section id="quiz-screen" class="screen quiz-screen" aria-labelledby="quiz-heading" hidden>
         <div class="quiz-topline">
           <button class="text-button" data-action="menu" type="button">← Main menu</button>
-          <span id="progress-label" class="progress-label">01 / 25</span>
+          <span id="progress-label" class="progress-label">01 / 34</span>
         </div>
         <div class="prompt-row">
           <div>
-            <p class="eyebrow prompt-kicker">YOUR NEXT COUNTRY</p>
-            <h1 id="quiz-heading">Click the country <span id="target-name">—</span></h1>
+            <p id="target-kind-label" class="eyebrow prompt-kicker">YOUR NEXT PLACE</p>
+            <h1 id="quiz-heading">Click the <span id="target-prompt-kind">country</span> <span id="target-name">—</span></h1>
           </div>
           <div class="progress-track" aria-hidden="true"><span id="progress-fill"></span></div>
         </div>
         <div id="feedback" class="feedback" aria-live="polite">Select a country on the map.</div>
         <div class="map-frame">
+          <p id="map-type-label" class="map-type-label">Countries</p>
           <canvas id="quiz-map" width="1011" height="1082" role="img" aria-label="Interactive map of Africa. Click the map to answer."></canvas>
         </div>
       </section>
@@ -51,12 +52,13 @@
           <p id="results-lede" class="intro"></p>
         </div>
         <div class="results-layout">
-          <div class="result-map-frame">
-            <canvas id="results-map" width="1011" height="1082" role="img" aria-label="Map showing your correct answers in green and missed countries in red."></canvas>
+          <div class="results-maps">
+            <div class="result-map-block"><h2>Countries</h2><div class="result-map-frame"><canvas id="results-country-map" width="1011" height="1082" role="img" aria-label="Countries map showing correct answers in green and missed countries in red."></canvas></div></div>
+            <div class="result-map-block"><h2>Geographic features</h2><div class="result-map-frame"><canvas id="results-geography-map" width="1011" height="1082" role="img" aria-label="Geographic features map showing correct answers in green and missed features in red."></canvas></div></div>
           </div>
           <aside class="score-panel">
-            <div class="score-number"><span id="score-count">0</span><span class="score-total">/ 25</span></div>
-            <p class="score-label">COUNTRIES CORRECT</p>
+            <div class="score-number"><span id="score-count">0</span><span class="score-total">/ 34</span></div>
+            <p class="score-label">PLACES CORRECT</p>
             <div class="grade-block"><span id="score-percent">0%</span><span>TEST GRADE</span></div>
             <div class="answer-lists">
               <div><p class="list-title"><span class="legend-swatch green"></span>Correct <span id="correct-count" class="list-count">0</span></p><ul id="correct-list"></ul></div>
@@ -74,5 +76,7 @@
     </main>
     <img id="source-map" src="africa-map.png" alt="" hidden>
     <img id="region-index" src="map-region-index.png" alt="" hidden>
+    <img id="source-geography-map" src="africa-geographic-map.png" alt="" hidden>
+    <img id="geography-region-index" src="geographic-region-index.png" alt="" hidden>
   </body>
 </html>
