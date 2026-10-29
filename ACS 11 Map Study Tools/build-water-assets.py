@@ -36,6 +36,26 @@ for path in definitions["paths"]:
     radius = path["width"] // 2
     for x, y in points:
         draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=definitions["regionIds"][path["name"]])
+    # Large, overlapping click zones make narrow rivers easier to select.
+    circle_radius = path.get("circleRadius")
+    if circle_radius:
+        region_id = definitions["regionIds"][path["name"]]
+        spacing = circle_radius * 1.35
+        distance_to_next = 0
+        for start, end in zip(points, points[1:]):
+            dx, dy = end[0] - start[0], end[1] - start[1]
+            segment_length = (dx * dx + dy * dy) ** 0.5
+            if not segment_length:
+                continue
+            while distance_to_next <= segment_length:
+                fraction = distance_to_next / segment_length
+                x = round(start[0] + dx * fraction)
+                y = round(start[1] + dy * fraction)
+                draw.ellipse((x - circle_radius, y - circle_radius, x + circle_radius, y + circle_radius), fill=region_id)
+                distance_to_next += spacing
+            distance_to_next -= segment_length
+        x, y = points[-1]
+        draw.ellipse((x - circle_radius, y - circle_radius, x + circle_radius, y + circle_radius), fill=region_id)
 for name, points in definitions["polygons"].items():
     draw.polygon([tuple(point) for point in points], fill=definitions["regionIds"][name])
 

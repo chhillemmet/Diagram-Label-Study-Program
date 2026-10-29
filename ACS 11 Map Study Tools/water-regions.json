@@ -224,7 +224,8 @@
           361.7,
           433.6
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "Orange River",
@@ -342,7 +343,8 @@
           508.6,
           943.2
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "Congo River",
@@ -516,7 +518,8 @@
           464.4,
           588.8
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "Zambezi River",
@@ -646,7 +649,8 @@
           771.1,
           785.3
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "Blue Nile River",
@@ -748,7 +752,8 @@
           722.4,
           295.4
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "White Nile River",
@@ -850,7 +855,8 @@
           722.4,
           295.4
         ]
-      ]
+      ],
+      "circleRadius": 34
     },
     {
       "name": "Nile River",
@@ -1016,7 +1022,8 @@
           705.6,
           120.5
         ]
-      ]
+      ],
+      "circleRadius": 34
     }
   ],
   "polygons": {
