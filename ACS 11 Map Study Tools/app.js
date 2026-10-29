@@ -26,13 +26,22 @@ const FEATURE_REGION_IDS = {
   'Congo Basin': 5, 'Ethiopian Highlands': 6, Serengeti: 7,
   'Kalahari Desert': 8, 'Namib Desert': 9, 'Dragon Mountains': 10,
 };
+const STUDY_WATER_PLACES = [
+  'Niger River', 'Orange River', 'Congo River', 'Zambezi River', 'Nile River',
+  'Blue Nile River', 'White Nile River', 'Lake Malawi', 'Lake Victoria',
+  'Lake Tanganyika', 'Victoria Falls', 'Cape of Good Hope', 'Horn of Africa',
+  'Mnt. Kilimanjaro',
+];
+const WATER_REGION_IDS = Object.fromEntries(STUDY_WATER_PLACES.map((name, index) => [name, index + 2]));
 const STUDY_ITEMS = [
   ...STUDY_COUNTRIES.map(name => ({ name, mapId: 'countries', regionId: COUNTRY_REGION_IDS[name], kind: 'country' })),
   ...STUDY_FEATURES.map(name => ({ name, mapId: 'geography', regionId: FEATURE_REGION_IDS[name], kind: 'geographic feature' })),
+  ...STUDY_WATER_PLACES.map(name => ({ name, mapId: 'water', regionId: WATER_REGION_IDS[name], kind: 'river or landmark' })),
 ];
 const MAPS = {
   countries: { source: document.querySelector('#source-map'), index: document.querySelector('#region-index') },
   geography: { source: document.querySelector('#source-geography-map'), index: document.querySelector('#geography-region-index') },
+  water: { source: document.querySelector('#source-water-map'), index: document.querySelector('#water-region-index') },
 };
 const ROUND_DELAY = 1500;
 const FEEDBACK_COLORS = { correct: [92, 157, 100], wrong: [196, 76, 61] };
@@ -54,7 +63,7 @@ let busy = false;
 
 function setupIssue() {
   if (!mapsReady) return 'Loading the maps…';
-  if (STUDY_COUNTRIES.length !== 25 || STUDY_FEATURES.length !== 9 || STUDY_ITEMS.length !== 34) return 'The study list is incomplete.';
+  if (STUDY_COUNTRIES.length !== 25 || STUDY_FEATURES.length !== 9 || STUDY_WATER_PLACES.length !== 14 || STUDY_ITEMS.length !== 48) return 'The study list is incomplete.';
   const missing = STUDY_ITEMS.filter(item => !item.regionId);
   if (missing.length) return `Map regions not configured for: ${missing.map(item => item.name).join(', ')}.`;
   return '';
@@ -64,7 +73,7 @@ function syncSetup() {
   const issue = setupIssue();
   startButton.disabled = Boolean(issue);
   startNote.textContent = issue;
-  document.querySelector('#country-count').textContent = '34 places · one round';
+  document.querySelector('#country-count').textContent = '48 places · one round';
 }
 
 function loadMaps() {
@@ -142,14 +151,17 @@ function showTarget() {
   if (roundIndex >= queue.length) { finishRound(); return; }
   activeTarget = queue[roundIndex];
   document.querySelector('#target-name').textContent = activeTarget.name;
-  document.querySelector('#target-prompt-kind').textContent = activeTarget.kind;
-  document.querySelector('#target-kind-label').textContent = `YOUR NEXT ${activeTarget.kind.toUpperCase()}`;
-  document.querySelector('#map-type-label').textContent = activeTarget.mapId === 'countries' ? 'Countries' : 'Geographic features';
+  const mapLabels = { countries: ['country', 'Countries', 'country'], geography: ['geographic feature', 'Geographic features', 'geographic feature'], water: ['river or landmark', 'Rivers and landmarks', 'river or landmark'] };
+  const [kind, mapLabel, kicker] = mapLabels[activeTarget.mapId];
+  const noArticle = activeTarget.mapId === 'water' && (activeTarget.name.startsWith('Lake ') || ['Victoria Falls', 'Mnt. Kilimanjaro'].includes(activeTarget.name));
+  document.querySelector('#target-prompt-kind').textContent = activeTarget.mapId === 'water' ? (noArticle ? '' : 'the') : `the ${kind}`;
+  document.querySelector('#target-kind-label').textContent = `YOUR NEXT ${kicker.toUpperCase()}`;
+  document.querySelector('#map-type-label').textContent = mapLabel;
   document.querySelector('#progress-label').textContent = `${String(roundIndex + 1).padStart(2, '0')} / ${queue.length}`;
   document.querySelector('#progress-fill').style.width = `${(roundIndex / queue.length) * 100}%`;
   const feedback = document.querySelector('#feedback');
   feedback.className = 'feedback';
-  feedback.textContent = `Click the ${activeTarget.kind} on the map.`;
+  feedback.textContent = activeTarget.mapId === 'water' ? 'Click the labeled location on the map.' : `Click the ${activeTarget.kind} on the map.`;
   renderMap(document.querySelector('#quiz-map'), activeTarget.mapId);
   busy = false;
 }
@@ -224,7 +236,7 @@ function finishRound() {
   activeTarget = null;
   const correctItems = STUDY_ITEMS.filter(item => scoreByName.get(item.name) === true);
   const missedItems = STUDY_ITEMS.filter(item => scoreByName.get(item.name) !== true);
-  for (const [mapId, canvasId] of [['countries', '#results-country-map'], ['geography', '#results-geography-map']]) {
+  for (const [mapId, canvasId] of [['countries', '#results-country-map'], ['geography', '#results-geography-map'], ['water', '#results-water-map']]) {
     const items = STUDY_ITEMS.filter(item => item.mapId === mapId);
     const colors = {};
     for (const item of correctItems) if (item.mapId === mapId) colors[item.regionId] = FEEDBACK_COLORS.correct;

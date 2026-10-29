@@ -78,11 +78,17 @@ button{font:inherit}
 .map-footer{border-color:#d5d9d1}
 @media(max-width:560px){.site-header{font-size:12px}.course-tag{font-size:10px}.site-footer{height:auto;min-height:48px;gap:10px;font-size:10px}.site-footer .signature{text-align:right}}
 
-/* Both study diagrams use the same dimensions so quiz transitions stay consistent. */
+/* The study diagrams use the same dimensions so quiz transitions stay consistent. */
 .map-type-label{margin:0 0 7px;font-size:12px;font-weight:600;color:var(--muted)}
 .results-maps{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0}
 .result-map-block h2{font-size:15px;margin:0 0 8px}
-.result-map-frame #results-country-map,.result-map-frame #results-geography-map{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain}
+.result-map-frame #results-country-map,.result-map-frame #results-geography-map,.result-map-frame #results-water-map{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain}
 .result-map-frame{padding:12px}
-@media(max-width:850px){.results-maps{grid-template-columns:1fr 1fr}.result-map-frame #results-country-map,.result-map-frame #results-geography-map{max-height:58vh}}
-@media(max-width:560px){.results-maps{grid-template-columns:1fr}.result-map-frame #results-country-map,.result-map-frame #results-geography-map{max-height:none;width:min(100%,390px);margin-inline:auto}.map-type-label{font-size:11px}}
+@media(max-width:850px){.results-maps{grid-template-columns:1fr 1fr}.result-map-frame #results-country-map,.result-map-frame #results-geography-map,.result-map-frame #results-water-map{max-height:58vh}}
+@media(max-width:560px){.results-maps{grid-template-columns:1fr}.result-map-frame #results-country-map,.result-map-frame #results-geography-map,.result-map-frame #results-water-map{max-height:none;width:min(100%,390px);margin-inline:auto}.map-type-label{font-size:11px}}
+
+/* Three result maps share the full row, with scoring below them. */
+.results-layout{grid-template-columns:minmax(0,1fr)}
+.results-maps{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:850px){.results-maps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.results-maps{grid-template-columns:1fr}}

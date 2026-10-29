@@ -4,22 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f5f3ed">
-    <meta name="description" content="A quick, interactive map quiz for studying African countries and geographic features.">
+    <meta name="description" content="A quick, interactive map quiz for studying African countries, geographic features, rivers, and landmarks.">
     <title>Africa Map Practice</title>
-    <link rel="stylesheet" href="styles.css?v=9">
-    <script src="app.js?v=9" defer></script>
+    <link rel="stylesheet" href="styles.css?v=10">
+    <script src="app.js?v=10" defer></script>
   </head>
   <body>
     <main class="app-shell">
       <section id="home-screen" class="screen home-screen" aria-labelledby="home-title">
         <div class="home-copy">
           <h1 id="home-title">Practice the<br><span>Africa map</span></h1>
-          <p class="intro">Practice finding the countries and geographic features on your study list. The quiz switches maps as you go.</p>
+          <p class="intro">Practice finding the countries, geographic features, rivers, lakes, and landmarks on your study list. The quiz switches maps as you go.</p>
           <div class="home-actions">
             <button id="start-button" class="button button-primary" type="button">Start practice</button>
             <span id="setup-note" class="setup-note"></span>
           </div>
-          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">34 places · one round</span></div>
+          <div class="home-meta"><span class="meta-dot"></span><span id="country-count">48 places · one round</span></div>
         </div>
         <div class="home-art" aria-hidden="true">
           <canvas id="home-map" class="home-map" width="1011" height="1082" aria-hidden="true"></canvas>
@@ -29,12 +29,12 @@
       <section id="quiz-screen" class="screen quiz-screen" aria-labelledby="quiz-heading" hidden>
         <div class="quiz-topline">
           <button class="text-button" data-action="menu" type="button">← Main menu</button>
-          <span id="progress-label" class="progress-label">01 / 34</span>
+          <span id="progress-label" class="progress-label">01 / 48</span>
         </div>
         <div class="prompt-row">
           <div>
             <p id="target-kind-label" class="eyebrow prompt-kicker">YOUR NEXT PLACE</p>
-            <h1 id="quiz-heading">Click the <span id="target-prompt-kind">country</span> <span id="target-name">—</span></h1>
+            <h1 id="quiz-heading">Click <span id="target-prompt-kind">the country</span> <span id="target-name">—</span></h1>
           </div>
           <div class="progress-track" aria-hidden="true"><span id="progress-fill"></span></div>
         </div>
@@ -55,9 +55,10 @@
           <div class="results-maps">
             <div class="result-map-block"><h2>Countries</h2><div class="result-map-frame"><canvas id="results-country-map" width="1011" height="1082" role="img" aria-label="Countries map showing correct answers in green and missed countries in red."></canvas></div></div>
             <div class="result-map-block"><h2>Geographic features</h2><div class="result-map-frame"><canvas id="results-geography-map" width="1011" height="1082" role="img" aria-label="Geographic features map showing correct answers in green and missed features in red."></canvas></div></div>
+            <div class="result-map-block"><h2>Rivers and landmarks</h2><div class="result-map-frame"><canvas id="results-water-map" width="1011" height="1082" role="img" aria-label="Rivers and landmarks map showing correct answers in green and missed places in red."></canvas></div></div>
           </div>
           <aside class="score-panel">
-            <div class="score-number"><span id="score-count">0</span><span class="score-total">/ 34</span></div>
+            <div class="score-number"><span id="score-count">0</span><span class="score-total">/ 48</span></div>
             <p class="score-label">PLACES CORRECT</p>
             <div class="grade-block"><span id="score-percent">0%</span><span>TEST GRADE</span></div>
             <div class="answer-lists">
@@ -78,5 +79,7 @@
     <img id="region-index" src="map-region-index.png" alt="" hidden>
     <img id="source-geography-map" src="africa-geographic-map.png" alt="" hidden>
     <img id="geography-region-index" src="geographic-region-index.png?v=6" alt="" hidden>
+    <img id="source-water-map" src="africa-water-map.png?v=1" alt="" hidden>
+    <img id="water-region-index" src="water-region-index.png?v=1" alt="" hidden>
   </body>
 </html>
