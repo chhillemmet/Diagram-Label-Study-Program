@@ -73,7 +73,7 @@
   const seenMathPrompts = new Set();
   function nextFreshMathSet() {
     let history = [];
-    try { history = JSON.parse(localStorage.getItem('cyberStudyRecentMathPrompts') || '[]'); } catch { /* Storage can be unavailable in private or offline browser modes. */ }
+    try { history = JSON.parse(localStorage.getItem('studyHubRecentMathPrompts') || '[]'); } catch { /* Storage can be unavailable in private or offline browser modes. */ }
     const used = new Set([...history, ...seenMathPrompts]);
     const fresh = new Map();
     for (let attempt = 0; attempt < 300 && fresh.size < 15; attempt++) {
@@ -82,7 +82,7 @@
     const round = shuffle([...fresh.values()]).slice(0, 15);
     if (round.length < 15) return shuffle(mathQuestions()).slice(0, 15);
     for (const question of round) seenMathPrompts.add(question.prompt);
-    try { localStorage.setItem('cyberStudyRecentMathPrompts', JSON.stringify([...used, ...round.map(q => q.prompt)].slice(-1000))); } catch { /* The in-memory history still prevents repeats in this page. */ }
+    try { localStorage.setItem('studyHubRecentMathPrompts', JSON.stringify([...used, ...round.map(q => q.prompt)].slice(-1000))); } catch { /* The in-memory history still prevents repeats in this page. */ }
     return round;
   }
 
@@ -92,7 +92,10 @@
     const result = [];
     for (const id of selected) {
       let pool = (window.STUDY_BANKS[id] || []).map(([prompt, correct, ...wrong]) => ({ subject: id, subjectName: names[id], prompt, correct, options: shuffle([correct, ...wrong]) }));
-      if (id === 'acs') pool = shuffle(pool).slice(0, 20);
+      if (id === 'acs') {
+        pool = shuffle(pool);
+        if ($('#acs-length').value !== 'all') pool = pool.slice(0, 20);
+      }
       if (id === 'math') pool = nextFreshMathSet();
       result.push(...pool);
     }
@@ -141,10 +144,14 @@
   }
   function updateSelection() {
     const checked = inputs.filter((input) => input.checked);
+    const acsSelected = checked.some((input) => input.value === 'acs');
+    $('#acs-length-panel').hidden = !acsSelected;
     $('#start-quiz').disabled = !checked.length;
-    $('#selection-note').textContent = checked.length ? `${checked.length === 1 ? 'One subject' : `${checked.length} subjects`} selected. A round will include ${checked.map((input) => ({acs:20,drama:9,math:15}[input.value])).reduce((a,b)=>a+b,0)} questions.` : 'Choose at least one subject to begin.';
+    const total = checked.map((input) => input.value === 'acs' ? ($('#acs-length').value === 'all' ? window.STUDY_BANKS.acs.length : 20) : ({drama:9,math:15}[input.value])).reduce((a,b)=>a+b,0);
+    $('#selection-note').textContent = checked.length ? `${checked.length === 1 ? 'One subject' : `${checked.length} subjects`} selected · ${total} questions this round.` : 'Choose at least one subject to begin.';
   }
   inputs.forEach((input) => input.addEventListener('change', updateSelection));
+  $('#acs-length').addEventListener('change', updateSelection);
   $('#select-all').addEventListener('click', () => { inputs.forEach((input) => { input.checked = true; }); updateSelection(); });
   $('#start-quiz').addEventListener('click', begin); $('#again-button').addEventListener('click', begin);
   $('#next-question').addEventListener('click', () => { if (current + 1 >= questions.length) finish(); else { current++; renderQuestion(); } });

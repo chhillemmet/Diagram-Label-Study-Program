@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#110b2b">
+  <meta name="theme-color" content="#f5f3ee">
   <meta name="description" content="Choose a subject and make a practice quiz for midterms.">
-  <title>Cyber Study Club</title>
+  <title>Midterm Practice</title>
   <link rel="stylesheet" href="study-hub.css">
   <script src="quiz-banks.js" defer></script>
   <script src="study-hub.js" defer></script>
@@ -13,46 +13,46 @@
 <body>
   <div class="shell">
     <header class="topbar">
-      <a class="brand" href="./" aria-label="Cyber Study Club home"><span class="brand-mark">✦</span><span>CYBER<span class="pink">STUDY</span> CLUB</span></a>
-      <div class="top-right"><span class="online"><i></i> STUDY SERVER ONLINE</span><a class="map-link" href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Africa map practice ↗</a></div>
+      <a class="brand" href="./">Midterm practice</a>
+      <div class="top-right"><a class="map-link" href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Africa map practice</a></div>
     </header>
 
     <main>
       <section id="menu-screen" class="menu-screen">
         <div class="hero">
-          <p class="eyebrow">/// Midterm study hub</p>
-          <h1>Pick a subject.<br><span>Get quiz-ready.</span></h1>
-          <p class="intro">Choose one class or mix a few into one practice round. Questions shuffle each time, and math problems are generated fresh for each round.</p>
-          <div class="hero-tags"><span>01 / CHOOSE</span><span>02 / PRACTICE</span><span>03 / CHECK YOUR SCORE</span></div>
+          <p class="eyebrow">Study tools</p>
+          <h1>Choose a subject</h1>
+          <p class="intro">Pick one class or combine a few for a mixed practice round. Questions are shuffled each time, and the math problems are generated for each round.</p>
         </div>
 
         <section class="subject-section" aria-labelledby="subjects-title">
-          <div class="section-heading"><div><p class="eyebrow">/// Select any combination</p><h2 id="subjects-title">What are you studying?</h2></div><button id="select-all" class="quiet-button" type="button">Select all</button></div>
+          <div class="section-heading"><div><p class="eyebrow">Choose one or more</p><h2 id="subjects-title">What are you studying?</h2></div><button id="select-all" class="quiet-button" type="button">Select all</button></div>
           <div class="subject-grid">
             <label class="subject-card acs-card">
               <input type="checkbox" name="subject" value="acs">
-              <span class="card-check" aria-hidden="true">✓</span>
               <span class="subject-code">ACS 11</span><strong>African Canadian Studies</strong>
               <span class="subject-info">Questions on Africa, human origins and early civilizations, drawn from your study list.</span>
-              <span class="question-count">RANDOM SET OF 20 · MAP QUIZ ALSO AVAILABLE</span>
+              <span class="question-count">Multiple choice · 123 questions</span>
             </label>
             <label class="subject-card drama-card">
               <input type="checkbox" name="subject" value="drama">
-              <span class="card-check" aria-hidden="true">✓</span>
               <span class="subject-code">DRAMA</span><strong>Drama</strong>
               <span class="subject-info">Tableau, mime and improv definitions, techniques and scene terms.</span>
-              <span class="question-count">9 QUESTIONS · ONE COMPLETE ROUND</span>
+              <span class="question-count">9 multiple-choice questions</span>
             </label>
             <label class="subject-card math-card">
               <input type="checkbox" name="subject" value="math">
-              <span class="card-check" aria-hidden="true">✓</span>
               <span class="subject-code">MATH 10</span><strong>Academic Math</strong>
               <span class="subject-info">Measurement, surface area, volume, spheres and right-triangle trigonometry.</span>
-              <span class="question-count">15 FRESH QUESTIONS · DIAGRAMS INCLUDED WHEN USEFUL</span>
+              <span class="question-count">15 new questions each round</span>
             </label>
           </div>
+          <div id="acs-length-panel" class="acs-length-panel" hidden>
+            <label for="acs-length">ACS question set</label>
+            <select id="acs-length"><option value="some">20 random questions</option><option value="all">All 123 questions</option></select>
+          </div>
           <div class="start-row"><button id="start-quiz" class="primary-button" type="button" disabled>Start practice round <span aria-hidden="true">→</span></button><p id="selection-note" class="selection-note" aria-live="polite">Choose at least one subject to begin.</p></div>
-          <div class="map-callout"><div><span class="callout-icon">◎</span><div><strong>Want to label the maps?</strong><p>The original Africa countries and geography practice is still here.</p></div></div><a href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Open map quiz <span aria-hidden="true">↗</span></a></div>
+        <div class="map-callout"><div><div><strong>Africa map practice</strong><p>Label the countries and geographic features on the map.</p></div></div><a href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Open map quiz</a></div>
         </section>
       </section>
 
@@ -70,14 +70,14 @@
       </section>
 
       <section id="results-screen" class="results-screen" hidden>
-        <p class="eyebrow">/// Round complete</p><h1 id="results-title">Nice work.</h1>
+        <p class="eyebrow">Round complete</p><h1 id="results-title">Nice work.</h1>
         <p id="results-summary" class="intro"></p>
         <div class="result-score"><strong id="results-score"></strong><span id="results-percent"></span></div>
         <div id="results-breakdown" class="results-breakdown"></div>
         <div class="result-actions"><button id="again-button" class="primary-button" type="button">Try another round <span aria-hidden="true">↻</span></button><button class="quiet-button" data-action="menu" type="button">Choose subjects</button></div>
       </section>
     </main>
-    <footer><span>CYBER STUDY CLUB · MIDTERM PRACTICE</span><span>Made by Emmet Burnie</span></footer>
+    <footer><span>Made by Emmet Burnie</span></footer>
   </div>
 </body>
 </html>
