@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#f5f3ee">
   <meta name="description" content="Choose a subject and make a practice quiz for midterms.">
   <title>Midterm Practice</title>
-  <link rel="stylesheet" href="study-hub.css?v=hub-2026-11-01">
-  <script src="quiz-banks.js?v=hub-2026-11-01" defer></script>
-  <script src="study-hub.js?v=hub-2026-11-01" defer></script>
+  <link rel="stylesheet" href="study-hub.css?v=hub-2026-11-01-r1">
+  <script src="quiz-banks.js?v=hub-2026-11-01-r1" defer></script>
+  <script src="study-hub.js?v=hub-2026-11-01-r1" defer></script>
 </head>
 <body>
   <div class="shell">
@@ -51,6 +51,7 @@
             <label for="acs-length">ACS question set</label>
             <select id="acs-length"><option value="some">20 random questions</option><option value="all">All 123 questions</option></select>
           </div>
+          <label class="retry-setting"><input id="repeat-missed" type="checkbox" checked><span><strong>Repeat missed questions</strong><small>ACS and Drama questions return later until correct. Your score counts the first try.</small></span></label>
           <div class="start-row"><button id="start-quiz" class="primary-button" type="button" disabled>Start practice round <span aria-hidden="true">→</span></button><p id="selection-note" class="selection-note" aria-live="polite">Choose at least one subject to begin.</p></div>
         <div class="map-callout"><div><div><strong>Africa map practice</strong><p>Label the countries and geographic features on the map.</p></div></div><a href="./ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html">Open map quiz</a></div>
         </section>

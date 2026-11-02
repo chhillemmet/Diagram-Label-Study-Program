@@ -2,7 +2,8 @@
   const $ = (selector) => document.querySelector(selector);
   const menu = $('#menu-screen'), quiz = $('#quiz-screen'), results = $('#results-screen');
   const inputs = [...document.querySelectorAll('input[name="subject"]')];
-  let questions = [], current = 0, score = 0, bySubject = {}, locked = false;
+  let questions = [], current = 0, initialQuestionCount = 0, score = 0, bySubject = {}, locked = false, repeatMissed = true;
+  let firstAttempts = new WeakMap();
 
   const rnd = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
   const shuffle = (items) => {
@@ -105,7 +106,8 @@
   function begin() {
     const selected = inputs.filter((input) => input.checked);
     if (!selected.length) return;
-    const round = selectedQuestions(); questions = round.questions; current = 0; score = 0; bySubject = {};
+    const round = selectedQuestions(); questions = round.questions; current = 0; initialQuestionCount = questions.length; score = 0; bySubject = {}; firstAttempts = new WeakMap();
+    repeatMissed = $('#repeat-missed').checked;
     show(quiz); renderQuestion();
   }
   function renderQuestion() {
@@ -126,18 +128,29 @@
   }
   function chooseAnswer(q, option, button) {
     if (locked) return; locked = true;
-    const correct = option === q.correct; if (correct) score++;
-    bySubject[q.subject] ||= { name: q.subjectName, total: 0, correct: 0 }; bySubject[q.subject].total++; if (correct) bySubject[q.subject].correct++;
+    const correct = option === q.correct;
+    if (!firstAttempts.has(q)) {
+      firstAttempts.set(q, correct);
+      bySubject[q.subject] ||= { name: q.subjectName, total: 0, correct: 0 };
+      bySubject[q.subject].total++;
+      if (correct) { score++; bySubject[q.subject].correct++; }
+    }
+    const willRepeat = !correct && repeatMissed && q.subject !== 'math';
+    if (willRepeat) {
+      const earliestLaterSlot = current + 2;
+      const insertAt = earliestLaterSlot <= questions.length ? rnd(earliestLaterSlot, questions.length) : questions.length;
+      questions.splice(insertAt, 0, q);
+    }
     for (const answer of [...$('#answer-options').children]) { answer.disabled = true; if (answer.querySelector('span:last-child').textContent === q.correct) answer.classList.add('correct'); }
     if (!correct) button.classList.add('incorrect');
-    const feedback = $('#answer-feedback'); feedback.className = `answer-feedback ${correct ? 'good' : 'bad'}`; feedback.textContent = correct ? 'That’s right.' : `Not quite. The answer is: ${q.correct}`;
+    const feedback = $('#answer-feedback'); feedback.className = `answer-feedback ${correct ? 'good' : 'bad'}`; feedback.textContent = correct ? 'That’s right.' : `Not quite. The answer is: ${q.correct}${willRepeat ? ' This question will come back later.' : ''}`;
     $('#next-question').textContent = current + 1 === questions.length ? 'See results →' : 'Next question →'; $('#next-question').hidden = false;
   }
   function finish() {
-    const percent = Math.round(score/questions.length*100);
+    const percent = Math.round(score/initialQuestionCount*100);
     $('#results-title').textContent = percent >= 80 ? 'Nice work.' : 'Good practice.';
-    $('#results-summary').textContent = `You answered ${score} of ${questions.length} questions correctly.`;
-    $('#results-score').textContent = `${score} / ${questions.length}`; $('#results-percent').textContent = `${percent}%`;
+    $('#results-summary').textContent = `You got ${score} of ${initialQuestionCount} questions right on the first try.`;
+    $('#results-score').textContent = `${score} / ${initialQuestionCount}`; $('#results-percent').textContent = `${percent}%`;
     const breakdown = $('#results-breakdown'); breakdown.replaceChildren();
     for (const group of Object.values(bySubject)) { const card = document.createElement('article'); card.className = 'breakdown-card'; const heading = document.createElement('h2'); heading.textContent = group.name; const text = document.createElement('p'); text.textContent = `${group.correct} / ${group.total} correct · ${Math.round(group.correct/group.total*100)}%`; card.append(heading,text); breakdown.append(card); }
     show(results);
