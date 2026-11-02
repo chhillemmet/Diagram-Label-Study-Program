@@ -70,6 +70,22 @@
     return bank;
   }
 
+  const seenMathPrompts = new Set();
+  function nextFreshMathSet() {
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem('cyberStudyRecentMathPrompts') || '[]'); } catch { /* Storage can be unavailable in private or offline browser modes. */ }
+    const used = new Set([...history, ...seenMathPrompts]);
+    const fresh = new Map();
+    for (let attempt = 0; attempt < 300 && fresh.size < 15; attempt++) {
+      for (const question of mathQuestions()) if (!used.has(question.prompt)) fresh.set(question.prompt, question);
+    }
+    const round = shuffle([...fresh.values()]).slice(0, 15);
+    if (round.length < 15) return shuffle(mathQuestions()).slice(0, 15);
+    for (const question of round) seenMathPrompts.add(question.prompt);
+    try { localStorage.setItem('cyberStudyRecentMathPrompts', JSON.stringify([...used, ...round.map(q => q.prompt)].slice(-1000))); } catch { /* The in-memory history still prevents repeats in this page. */ }
+    return round;
+  }
+
   function selectedQuestions() {
     const selected = inputs.filter((input) => input.checked).map((input) => input.value);
     const names = { acs: 'African Canadian Studies', drama: 'Drama', math: 'Academic Math 10' };
@@ -77,7 +93,7 @@
     for (const id of selected) {
       let pool = (window.STUDY_BANKS[id] || []).map(([prompt, correct, ...wrong]) => ({ subject: id, subjectName: names[id], prompt, correct, options: shuffle([correct, ...wrong]) }));
       if (id === 'acs') pool = shuffle(pool).slice(0, 20);
-      if (id === 'math') pool = shuffle(mathQuestions()).slice(0, 15);
+      if (id === 'math') pool = nextFreshMathSet();
       result.push(...pool);
     }
     return { selected, questions: shuffle(result) };
