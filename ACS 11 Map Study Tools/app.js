@@ -38,6 +38,7 @@ const STUDY_ITEMS = [
   ...STUDY_FEATURES.map(name => ({ name, mapId: 'geography', regionId: FEATURE_REGION_IDS[name], kind: 'geographic feature' })),
   ...STUDY_WATER_PLACES.map(name => ({ name, mapId: 'water', regionId: WATER_REGION_IDS[name], kind: 'river or landmark' })),
 ];
+const embeddedMode = new URLSearchParams(window.location.search).get('embedded') === '1' && window.parent !== window;
 const MAPS = {
   countries: { source: document.querySelector('#source-map'), index: document.querySelector('#region-index') },
   geography: { source: document.querySelector('#source-geography-map'), index: document.querySelector('#geography-region-index') },
@@ -94,6 +95,7 @@ function loadMaps() {
     mapsReady = true;
     renderMap(document.querySelector('#home-map'), 'countries');
     syncSetup();
+    if (embeddedMode) beginRound();
   }).catch(() => {
     startNote.textContent = 'A map could not load. Open this page through GitHub Pages or a local web server.';
   });
@@ -253,6 +255,7 @@ function finishRound() {
   fillList('#correct-list', correctItems.map(item => item.name));
   fillList('#missed-list', missedItems.map(item => item.name));
   setScreen(resultsScreen);
+  if (embeddedMode) window.parent.postMessage({ type: 'study-map-finished', correct: correctItems.length, total: STUDY_ITEMS.length }, window.location.origin);
 }
 
 function fillList(selector, names) {

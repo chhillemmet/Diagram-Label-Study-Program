@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f3ee">
+  <meta name="theme-color" content="#101629">
   <meta name="description" content="Choose a subject and make a practice quiz for midterms.">
   <title>Midterm Practice</title>
-  <link rel="stylesheet" href="study-hub.css?v=hub-2026-11-01-r1">
-  <script src="quiz-banks.js?v=hub-2026-11-01-r1" defer></script>
-  <script src="study-hub.js?v=hub-2026-11-01-r1" defer></script>
+  <link rel="stylesheet" href="study-hub.css?v=hub-2026-11-01-r2">
+  <script src="quiz-banks.js?v=hub-2026-11-01-r2" defer></script>
+  <script src="study-hub.js?v=hub-2026-11-01-r2" defer></script>
 </head>
 <body>
   <div class="shell">
@@ -29,19 +29,19 @@
           <div class="section-heading"><div><p class="eyebrow">Choose one or more</p><h2 id="subjects-title">What are you studying?</h2></div><button id="select-all" class="quiet-button" type="button">Select all</button></div>
           <div class="subject-grid">
             <label class="subject-card acs-card">
-              <input type="checkbox" name="subject" value="acs">
+              <input type="checkbox" name="subject" value="acs" checked>
               <span class="subject-code">ACS 11</span><strong>African Canadian Studies</strong>
               <span class="subject-info">Questions on Africa, human origins and early civilizations, drawn from your study list.</span>
               <span class="question-count">Multiple choice · 123 questions</span>
             </label>
             <label class="subject-card drama-card">
-              <input type="checkbox" name="subject" value="drama">
+              <input type="checkbox" name="subject" value="drama" checked>
               <span class="subject-code">DRAMA</span><strong>Drama</strong>
               <span class="subject-info">Tableau, mime and improv definitions, techniques and scene terms.</span>
               <span class="question-count">9 multiple-choice questions</span>
             </label>
             <label class="subject-card math-card">
-              <input type="checkbox" name="subject" value="math">
+              <input type="checkbox" name="subject" value="math" checked>
               <span class="subject-code">MATH 10</span><strong>Academic Math</strong>
               <span class="subject-info">Measurement, surface area, volume, spheres and right-triangle trigonometry.</span>
               <span class="question-count">15 new questions each round</span>
@@ -50,6 +50,7 @@
           <div id="acs-length-panel" class="acs-length-panel" hidden>
             <label for="acs-length">ACS question set</label>
             <select id="acs-length"><option value="some">20 random questions</option><option value="all">All 123 questions</option></select>
+            <label class="include-map-choice"><input id="include-map-round" type="checkbox"><span><strong>Include the Africa map round</strong><small>Also label countries, geographic features, rivers, and landmarks.</small></span></label>
           </div>
           <label class="retry-setting"><input id="repeat-missed" type="checkbox" checked><span><strong>Repeat missed questions</strong><small>ACS and Drama questions return later until correct. Your score counts the first try.</small></span></label>
           <div class="start-row"><button id="start-quiz" class="primary-button" type="button" disabled>Start practice round <span aria-hidden="true">→</span></button><p id="selection-note" class="selection-note" aria-live="polite">Choose at least one subject to begin.</p></div>
@@ -68,6 +69,11 @@
           <div id="answer-feedback" class="answer-feedback" role="status" aria-live="polite"></div>
           <button id="next-question" class="primary-button" type="button" hidden>Next question <span aria-hidden="true">→</span></button>
         </article>
+      </section>
+
+      <section id="map-round-screen" class="map-round-screen" hidden aria-label="Africa map round">
+        <div class="quiz-nav"><button class="quiet-button" data-action="menu" type="button">← Subjects</button><span class="quiz-subject-label">ACS · Africa map round</span></div>
+        <iframe id="map-quiz-frame" title="Africa map practice round" src="about:blank"></iframe>
       </section>
 
       <section id="results-screen" class="results-screen" hidden>

@@ -1,9 +1,10 @@
 (() => {
   const $ = (selector) => document.querySelector(selector);
-  const menu = $('#menu-screen'), quiz = $('#quiz-screen'), results = $('#results-screen');
+  const menu = $('#menu-screen'), quiz = $('#quiz-screen'), mapRoundScreen = $('#map-round-screen'), results = $('#results-screen');
   const inputs = [...document.querySelectorAll('input[name="subject"]')];
   let questions = [], current = 0, initialQuestionCount = 0, score = 0, bySubject = {}, locked = false, repeatMissed = true;
   let firstAttempts = new WeakMap();
+  let includeMapRound = false, mapRoundStarted = false, mapResult = null;
 
   const rnd = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
   const shuffle = (items) => {
@@ -102,12 +103,14 @@
     }
     return { selected, questions: shuffle(result) };
   }
-  function show(screen) { for (const el of [menu, quiz, results]) el.hidden = el !== screen; window.scrollTo({top:0,behavior:'smooth'}); }
+  function show(screen) { for (const el of [menu, quiz, mapRoundScreen, results]) el.hidden = el !== screen; window.scrollTo({top:0,behavior:'smooth'}); }
   function begin() {
     const selected = inputs.filter((input) => input.checked);
     if (!selected.length) return;
     const round = selectedQuestions(); questions = round.questions; current = 0; initialQuestionCount = questions.length; score = 0; bySubject = {}; firstAttempts = new WeakMap();
     repeatMissed = $('#repeat-missed').checked;
+    includeMapRound = inputs.some(input => input.checked && input.value === 'acs') && $('#include-map-round').checked;
+    mapRoundStarted = false; mapResult = null; $('#map-quiz-frame').src = 'about:blank';
     show(quiz); renderQuestion();
   }
   function renderQuestion() {
@@ -147,10 +150,21 @@
     $('#next-question').textContent = current + 1 === questions.length ? 'See results →' : 'Next question →'; $('#next-question').hidden = false;
   }
   function finish() {
-    const percent = Math.round(score/initialQuestionCount*100);
+    if (includeMapRound && !mapResult) {
+      if (!mapRoundStarted) {
+        mapRoundStarted = true;
+        $('#map-quiz-frame').src = './ACS%2011%20Map%20Study%20Tools/ACS-11-Map-Study-Tools.html?embedded=1';
+      }
+      show(mapRoundScreen);
+      return;
+    }
+    const totalQuestions = initialQuestionCount + (mapResult?.total || 0);
+    const totalScore = score + (mapResult?.correct || 0);
+    if (mapResult) bySubject.map = { name: 'Africa map practice', total: mapResult.total, correct: mapResult.correct };
+    const percent = Math.round(totalScore/totalQuestions*100);
     $('#results-title').textContent = percent >= 80 ? 'Nice work.' : 'Good practice.';
-    $('#results-summary').textContent = `You got ${score} of ${initialQuestionCount} questions right on the first try.`;
-    $('#results-score').textContent = `${score} / ${initialQuestionCount}`; $('#results-percent').textContent = `${percent}%`;
+    $('#results-summary').textContent = `You got ${totalScore} of ${totalQuestions} questions right on the first try.`;
+    $('#results-score').textContent = `${totalScore} / ${totalQuestions}`; $('#results-percent').textContent = `${percent}%`;
     const breakdown = $('#results-breakdown'); breakdown.replaceChildren();
     for (const group of Object.values(bySubject)) { const card = document.createElement('article'); card.className = 'breakdown-card'; const heading = document.createElement('h2'); heading.textContent = group.name; const text = document.createElement('p'); text.textContent = `${group.correct} / ${group.total} correct · ${Math.round(group.correct/group.total*100)}%`; card.append(heading,text); breakdown.append(card); }
     show(results);
@@ -159,15 +173,26 @@
     const checked = inputs.filter((input) => input.checked);
     const acsSelected = checked.some((input) => input.value === 'acs');
     $('#acs-length-panel').hidden = !acsSelected;
+    if (!acsSelected) $('#include-map-round').checked = false;
+    inputs.forEach((input) => { input.disabled = checked.length === 1 && input.checked; });
     $('#start-quiz').disabled = !checked.length;
     const total = checked.map((input) => input.value === 'acs' ? ($('#acs-length').value === 'all' ? window.STUDY_BANKS.acs.length : 20) : ({drama:9,math:15}[input.value])).reduce((a,b)=>a+b,0);
-    $('#selection-note').textContent = checked.length ? `${checked.length === 1 ? 'One subject' : `${checked.length} subjects`} selected · ${total} questions this round.` : 'Choose at least one subject to begin.';
+    const mapNote = acsSelected && $('#include-map-round').checked ? ' + Africa map round (48 places)' : '';
+    const minimumNote = checked.length === 1 ? ' At least one subject must stay selected.' : '';
+    $('#selection-note').textContent = checked.length ? `${checked.length === 1 ? 'One subject' : `${checked.length} subjects`} selected · ${total} questions${mapNote}.${minimumNote}` : 'Choose at least one subject to begin.';
   }
   inputs.forEach((input) => input.addEventListener('change', updateSelection));
   $('#acs-length').addEventListener('change', updateSelection);
+  $('#include-map-round').addEventListener('change', updateSelection);
   $('#select-all').addEventListener('click', () => { inputs.forEach((input) => { input.checked = true; }); updateSelection(); });
   $('#start-quiz').addEventListener('click', begin); $('#again-button').addEventListener('click', begin);
   $('#next-question').addEventListener('click', () => { if (current + 1 >= questions.length) finish(); else { current++; renderQuestion(); } });
   document.querySelectorAll('[data-action="menu"]').forEach((button) => button.addEventListener('click', () => show(menu)));
+  window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin || event.source !== $('#map-quiz-frame').contentWindow) return;
+    if (event.data?.type !== 'study-map-finished' || !Number.isInteger(event.data.correct) || !Number.isInteger(event.data.total)) return;
+    mapResult = { correct: event.data.correct, total: event.data.total };
+    finish();
+  });
   updateSelection();
 })();
