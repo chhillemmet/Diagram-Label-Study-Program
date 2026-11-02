@@ -172,7 +172,9 @@
   function updateSelection() {
     const checked = inputs.filter((input) => input.checked);
     const acsSelected = checked.some((input) => input.value === 'acs');
+    const retryableSubjectSelected = checked.some((input) => input.value === 'acs' || input.value === 'drama');
     $('#acs-length-panel').hidden = !acsSelected;
+    $('.retry-setting').hidden = !retryableSubjectSelected;
     if (!acsSelected) $('#include-map-round').checked = false;
     inputs.forEach((input) => { input.disabled = checked.length === 1 && input.checked; });
     $('#start-quiz').disabled = !checked.length;
