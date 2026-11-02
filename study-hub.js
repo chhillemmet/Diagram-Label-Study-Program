@@ -116,10 +116,13 @@
   function renderQuestion() {
     locked = false;
     const q = questions[current];
+    const isReview = firstAttempts.has(q) && !firstAttempts.get(q);
     $('#quiz-subject-label').textContent = q.subjectName;
-    $('#quiz-progress').textContent = `${current+1} / ${questions.length}`;
+    $('#quiz-progress').textContent = isReview ? 'Review question' : `${current+1} / ${questions.length}`;
+    $('#quiz-progress').classList.toggle('review', isReview);
     $('#progress-fill').style.width = `${current/questions.length*100}%`;
-    $('#question-kicker').textContent = `${q.subjectName.toUpperCase()} · QUESTION ${String(current+1).padStart(2,'0')}`;
+    $('#question-kicker').textContent = isReview ? `${q.subjectName.toUpperCase()} · REVIEW QUESTION` : `${q.subjectName.toUpperCase()} · QUESTION ${String(current+1).padStart(2,'0')}`;
+    $('#question-kicker').classList.toggle('review', isReview);
     $('#question-text').textContent = q.prompt;
     const diagram = $('#question-diagram'); diagram.hidden = !q.diagram; diagram.innerHTML = q.diagram || '';
     const options = $('#answer-options'); options.replaceChildren();
